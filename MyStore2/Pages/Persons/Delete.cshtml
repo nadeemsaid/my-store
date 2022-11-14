@@ -1,0 +1,28 @@
+﻿@page
+@using System.Data.SqlClient
+@model MyStore2.Pages.Persons.DeleteModel
+@{
+    try
+    {
+        String id = Request.Query["userid"];
+        String connectionString = "Data Source=hvdev-sql-01;Initial Catalog=dev_cosd_nadeem;Persist Security Info=True;User ID=sa;Password=Riley++";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            String sqlQuery = "DELETE FROM persons WHERE userid=@userid"; 
+            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+            {
+                command.Parameters.AddWithValue("@userid", id);
+
+                command.ExecuteNonQuery();
+
+            }
+        }
+    }
+    catch (Exception e)
+    {
+       
+    }
+    Response.Redirect("/Persons/Index");
+}
